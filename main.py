@@ -1,8 +1,15 @@
 import tkinter as tk
-import keyboard
+import sys
+import subprocess
 import json
 import os
 
+try:
+    import keyboard
+except ImportError:
+    print("Keyboard n existe, vou baixar pra vc :)")
+    subprocess.check_call([sys.executable,"-m","pip","install","keyboard"])
+    import keyboard
 
 class ContadorApp():
     def __init__(self,root):
