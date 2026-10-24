@@ -213,7 +213,10 @@ class ContadorApp():
     def PegarDigitos(self,tecla):
         if not self.AddSpins:
             teclas = ["0","1","2","3","4","5","6","7","8","9","-"]
-            if tecla.name in teclas:
+            if tecla.name == "-":
+                if self.add == "":
+                    self.add = "-"
+            elif tecla.name in teclas:
                 self.add = self.add+tecla.name
             elif tecla.name == "backspace":
                 self.add = self.add[:-1]
