@@ -14,9 +14,9 @@ except ImportError:
 class ContadorApp():
     def __init__(self,root):
 
-        corTexto = "#cdd6f4"
-        corFundo = "#1e1e2e"
-        corDestaque = "#89b4fa"
+        self.corTexto = "#cdd6f4"
+        self.corFundo = "#1e1e2e"
+        self.corDestaque = "#89b4fa"
         self.corSubt = "#7f849c"
 
         self.tempoSegundos = 0
@@ -26,7 +26,7 @@ class ContadorApp():
         self.estatisticasJ = False
         self.Root = root
         self.Root.title("")
-        self.Root.config(bg=corFundo)
+        self.Root.config(bg=self.corFundo)
         self.AddSpins = True
         self.add = ""
         self.spinBreak = 0
@@ -45,7 +45,7 @@ class ContadorApp():
 
         self.barra = tk.Frame(
             self.Root,
-            bg=corFundo
+            bg=self.corFundo
         )
         self.barra.pack(fill="x",side="top")
 
@@ -53,8 +53,8 @@ class ContadorApp():
         self.textBarra = tk.Label(
             self.barra,
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto,
+            bg=self.corFundo,
+            fg=self.corTexto,
             text="Prestige Tracker"
         )
 
@@ -63,12 +63,12 @@ class ContadorApp():
         self.but_fechar = tk.Button(
             self.barra,
             text="X",
-            bg=corFundo,
-            fg=corTexto,
+            bg=self.corFundo,
+            fg=self.corTexto,
             bd=0,
             width=3,
-            activebackground="red",
-            activeforeground=corFundo,
+            activebackground="#f38ba8",
+            activeforeground=self.corFundo,
             command=self.fecharSalvar
         )
         self.but_fechar.pack(side="right")
@@ -81,35 +81,35 @@ class ContadorApp():
                 
 
 
-        self.but_fechar.bind("<Enter>",lambda e: self.but_fechar.config(bg="red"))
-        self.but_fechar.bind("<Leave>",lambda e:self.but_fechar.config(bg=corFundo))
+        self.but_fechar.bind("<Enter>",lambda e: self.but_fechar.config(bg="#f38ba8"))
+        self.but_fechar.bind("<Leave>",lambda e:self.but_fechar.config(bg=self.corFundo))
 
         self.frameP = tk.Frame(self.Root)
         self.frameP.pack(fill="both",expand=True)
-        self.frameP.config(bg=corFundo)
+        self.frameP.config(bg=self.corFundo)
 
         
         
         self.label_spinbreak = tk.Label(
             self.frameP,
             font=("Arial",14,"bold"),
-            bg=corFundo,
-            fg=corTexto,
+            fg=self.corTexto,
+            bg=self.corFundo
         )
         self.label_spinbreak.pack(pady=(10,0))
         
-        self.canvas_bolas = tk.Canvas(self.frameP,width=160,height=30,highlightthickness=0,bg=corFundo)
+        self.canvas_bolas = tk.Canvas(self.frameP,width=160,height=30,highlightthickness=0,bg=self.corFundo)
         self.canvas_bolas.pack()
 
         self.frameE = tk.Frame(self.Root)
-        self.frameE.config(bg=corFundo)
+        self.frameE.config(bg=self.corFundo)
 
         self.label_stats = tk.Label(
             self.frameE,
             text="Stats",
             font=("Arial",30,"bold"),
-            bg=corFundo,
-            fg=corTexto
+            bg=self.corFundo,
+            fg=self.corTexto
         )
         self.label_stats.pack(pady=(10,0))
 
@@ -117,8 +117,8 @@ class ContadorApp():
             self.frameE,
             text=f"Session cycles: {self.ciclosSessao}",
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto,
+            bg=self.corFundo,
+            fg=self.corTexto,
         )
         self.label_statCycle.pack(pady=(10,0))
         self.label_statsTCycle = tk.Label(
@@ -126,8 +126,8 @@ class ContadorApp():
             self.frameE,
             text=f"Total cycles: {self.ciclos}",
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto,
+            bg=self.corFundo,
+            fg=self.corTexto,
         )
         self.label_statsTCycle.pack(pady=(5,0))
 
@@ -135,8 +135,8 @@ class ContadorApp():
             self.frameE,
             text=f"This sesion time: 00:00:00",
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto           
+            bg=self.corFundo,
+            fg=self.corTexto           
         )
         self.label_statSTime.pack(pady=(5,0))
 
@@ -144,8 +144,8 @@ class ContadorApp():
             self.frameE,
             text=f"Total Time: 00:00:00",
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto,
+            bg=self.corFundo,
+            fg=self.corTexto,
         )
         self.label_statsTTime.pack(pady=(5,0))
 
@@ -154,8 +154,8 @@ class ContadorApp():
             self.frameE,
             text=f"Estimated Kills: {self.contador*2}",
             font=("Arial",10,"bold"),
-            bg=corFundo,
-            fg=corTexto           
+            bg=self.corFundo,
+            fg=self.corTexto           
         )
         self.label_statsEstK.pack(pady=(5,0))
         
@@ -163,8 +163,8 @@ class ContadorApp():
             self.frameP,
             text="Prestiges",
             font=("Arial",14,"bold"),
-            bg = corFundo,
-            fg=corTexto
+            bg = self.corFundo,
+            fg=self.corTexto
         )
         self.label_titulos.pack(pady=(10,0))
         
@@ -172,8 +172,8 @@ class ContadorApp():
             self.frameP,
             text=str(self.contador),
             font=("Arial",30,"bold"),
-            bg=corFundo,
-            fg=corDestaque
+            bg=self.corFundo,
+            fg = self.corDestaque
         )
         self.label_contador.pack(pady=(10,0))
 
@@ -181,8 +181,8 @@ class ContadorApp():
             self.frameP,
             text="Spins:",
             font=("Arial",14,"bold"),
-            fg= corTexto,
-            bg= corFundo)
+            fg=self.corTexto,
+            bg=self.corFundo)
         self.label_spintitulo.pack(pady=(10,0))
 
         self.label_spincount = tk.Label(
@@ -190,7 +190,7 @@ class ContadorApp():
             text="...",
             font=("Arial",10,"bold"),
             fg=self.corSubt,
-            bg = corFundo
+            bg = self.corFundo
         )
 
         self.label_spincount.pack(pady=(10))
@@ -199,8 +199,8 @@ class ContadorApp():
             self.frameP,
             text=str(self.spins),
             font=("Arial",30,"bold"),
-            fg=corDestaque,
-            bg=corFundo
+            fg=self.corDestaque,
+            bg=self.corFundo
         )
         self.label_spins.pack(pady=(10,0))
 
@@ -212,20 +212,20 @@ class ContadorApp():
             text=f"Cycles: {self.ciclosSessao}",
             font=("Arial",10,"bold"),
             fg=self.corSubt,
-            bg=corFundo
+            bg=self.corFundo
         )
-        self.label_ciclos.columnconfigure(0,weight=1)
+
         self.label_ciclos.grid(row=0,column=0,sticky="w")
 
         self.label_tempo = tk.Label(
             self.frame_info,
             text=f"Time: 00:00:00",
             font=("Arial",10,"bold"),
-            bg=corFundo,
+            bg=self.corFundo,
             fg=self.corSubt
                 )
 
-        self.label_tempo.grid(row=0,column=1,sticky="e")
+        self.label_tempo.grid(row=0,column=1,sticky="w")
 
         keyboard.on_press_key("delete",lambda _:self.Root.after(0,self.IncrementarSpins))
         keyboard.on_press_key(76, lambda _: self.Root.after(0,self.incrementar))
@@ -364,8 +364,8 @@ class ContadorApp():
     def atualizarTimer(self):
         if self.AddSpins and not self.Pausado:
             self.label_tempo.config(fg=self.corSubt)
-            self.label_statsTTime.config(fg="#cdd6f4")
-            self.label_statSTime.config(fg="#cdd6f4")
+            self.label_statsTTime.config(fg=self.corTexto)
+            self.label_statSTime.config(fg=self.corTexto)
             self.tempoSegundos+=1
             self.totalTempo+=1
         else:
