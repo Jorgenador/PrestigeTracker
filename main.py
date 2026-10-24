@@ -221,15 +221,10 @@ class ContadorApp():
             elif tecla.name == "backspace":
                 self.add = self.add[:-1]
             self.label_spincount.config(text=str(self.add))
-        else:
-            if self.add != "":
-                self.spins += int(self.add)
-                self.label_spins.config(text=str(self.spins))
-                self.add =""
             
     def ConfirmarSpins(self):
         if not self.AddSpins:
-            if self.add != "":
+            if self.add not in ("","-"):
                 self.spins +=int(self.add)
                 self.label_spins.config(text=str(self.spins))
                 self.salvar_contador()
