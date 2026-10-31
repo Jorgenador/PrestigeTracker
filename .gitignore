@@ -1,2 +1,5 @@
 /.venv
 contador_prestiges.json
+/templates
+debug.png
+leituras.log
