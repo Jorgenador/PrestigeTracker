@@ -13,7 +13,7 @@ import pywinctl as pwc
 
 class ContadorApp():
     def __init__(self,root):
-
+        self.Rodando = False
         self.corTexto = "#cdd6f4"
         self.corFundo = "#1e1e2e"
         self.corDestaque = "#89b4fa"
@@ -251,7 +251,7 @@ class ContadorApp():
         keyboard.on_press(lambda e: self.Root.after(0,self.PegarDigitos,e))
         keyboard.on_press_key("+",lambda _: self.Root.after(0,self.SpinPres))
         keyboard.on_press_key("-",lambda _: self.Root.after(0,self.Pausar))
-        keyboard.on_press_key("*",lambda _: self.Root.after(0,self.trocarJanela))
+        keyboard.on_press_key(55,lambda _: self.Root.after(0,self.trocarJanela))
         keyboard.on_press_key("f8",lambda _:self.Root.after(0,self.capturarTemplate,"prestigio"))
         keyboard.on_press_key("f7",lambda _:self.Root.after(0,self.capturarTemplate,"botaospins"))
         keyboard.on_press_key("f6",lambda _:self.Root.after(0,self.capturarTemplate,"spins"))
@@ -339,6 +339,7 @@ class ContadorApp():
             if self.spinBreak > self.MaxP:
                 self.attCiclos(True)
                 self.spinBreak = 1
+                self.Rodando = False
             if self.spinBreak < 1:
                 self.attCiclos(False)
                 self.spinBreak = self.MaxP
@@ -396,7 +397,7 @@ class ContadorApp():
 
     def atualizarTimer(self):
         focus = self.robloxFocus()
-        if focus and self.AddSpins and not self.Pausado:
+        if focus and self.AddSpins and not self.Pausado and not self.Rodando:
                 self.label_tempo.config(fg=self.corSubt)
                 self.label_statsTTime.config(fg=self.corTexto)
                 self.label_statSTime.config(fg=self.corTexto)
@@ -471,6 +472,7 @@ class ContadorApp():
 
         if self.framesMenu >=2:
             self.leituraPendente = False
+            self.Rodando = True
             self.framesMenu = 0
             self.Root.after(500,self.lerSpins)
         
