@@ -68,4 +68,3 @@ goto :end
 :end
 echo.
 echo Processo finalizado.
-pause

@@ -4,23 +4,12 @@ import subprocess
 import json
 import os
 import time
-
-try:
-    import keyboard
-    import cv2
-    from mss import MSS
-    import rapidocr
-    import numpy as np
-    from rapidocr import RapidOCR
-except ImportError:
-    print("a library keyboard n existe, vou baixar pra vc :)")
-    subprocess.check_call([sys.executable,"py","-m","pip","install","-r","requirements" ])
-    import keyboard
-    import cv2
-    from mss import MSS
-    import rapidocr
-    import numpy as np
-    from rapidocr import RapidOCR
+import keyboard
+import cv2
+from mss import MSS
+import numpy as np
+from rapidocr import RapidOCR
+import pywinctl as pwc
 
 class ContadorApp():
     def __init__(self,root):
@@ -39,8 +28,7 @@ class ContadorApp():
         self.templates = {}
         self.tick = 0
         self.prestigioVisivel = False
-        self.timerVisivel = False
-        self.MaxP = 3
+        self.MaxP = 4
         self.Pausado = False
         self.estatisticasJ = False
         self.Root = root
@@ -265,15 +253,16 @@ class ContadorApp():
         keyboard.on_press_key("-",lambda _: self.Root.after(0,self.Pausar))
         keyboard.on_press_key("*",lambda _: self.Root.after(0,self.trocarJanela))
         keyboard.on_press_key("f8",lambda _:self.Root.after(0,self.capturarTemplate,"prestigio"))
-        keyboard.on_press_key("f7",lambda _:self.Root.after(0,self.capturarTemplate,"timer"))
-        keyboard.on_press_key("f6",lambda _:self.Root.after(0,self.capturarTemplate,"botaospins"))
-        keyboard.on_press_key("f5",lambda _:self.Root.after(0,self.capturarTemplate,"spins"))
+        keyboard.on_press_key("f7",lambda _:self.Root.after(0,self.capturarTemplate,"botaospins"))
+        keyboard.on_press_key("f6",lambda _:self.Root.after(0,self.capturarTemplate,"spins"))
         
         self.AtualizarBolas()
         self.atualizarTimer()
         self.monitorar()
 
     def caminhoDe(self,nome):
+        if not os.path.exists("templates"):
+            os.mkdir("templates")
         return os.path.join("templates",f"template_{nome}.png")
     
     def carregarContador(self):
@@ -353,9 +342,8 @@ class ContadorApp():
             if self.spinBreak < 1:
                 self.attCiclos(False)
                 self.spinBreak = self.MaxP
-            if qnt > 0 and self.spinBreak == self.MaxP:
+            if qnt > 0:
                 self.leituraPendente = True
-                print("leitura armada")
         self.AtualizarBolas()
 
     def attCiclos(self,situacao):
@@ -407,7 +395,8 @@ class ContadorApp():
         self.label_spinbreak.config(text=f"{texto}")
 
     def atualizarTimer(self):
-        if self.timerVisivel and self.AddSpins and not self.Pausado:
+        focus = self.robloxFocus()
+        if focus and self.AddSpins and not self.Pausado:
                 self.label_tempo.config(fg=self.corSubt)
                 self.label_statsTTime.config(fg=self.corTexto)
                 self.label_statSTime.config(fg=self.corTexto)
@@ -473,8 +462,6 @@ class ContadorApp():
             self.incrementar()
             self.PresCd = 30
 
-        if self.tick  % 10 == 0:
-            self.timerVisivel = self.verificar("timer") >= self.acuracia
 
         if self.leituraPendente and self.tick % 4 == 0:
             if self.verificar("botaospins") >= self.acuracia:
@@ -567,6 +554,12 @@ class ContadorApp():
         self.spins += valor
         self.label_spins.config(text=str(self.spins))
         self.salvar_contador()
+
+    def robloxFocus(self):
+        win = pwc.getActiveWindow()
+        if not win:
+            return False
+        return win.title.strip() == "Roblox"
 
 root = tk.Tk()
 app = ContadorApp(root)

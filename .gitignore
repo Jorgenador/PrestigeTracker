@@ -1,4 +1,5 @@
 /.venv
+/venv
 contador_prestiges.json
 /templates
 debug.png
