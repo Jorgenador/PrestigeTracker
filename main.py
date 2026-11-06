@@ -457,25 +457,26 @@ class ContadorApp():
         self.Root.geometry(f"+{x}+{y}")
 
     def monitorar(self):
-        self.tick+=1
-        self.prestigioVisivel = self.verificar("prestigio") >= self.acuracia
-        if self.PresCd == 0 and self.prestigioVisivel:
-            self.incrementar()
-            self.PresCd = 30
+        if self.robloxFocus():
+            self.tick+=1
+            self.prestigioVisivel = self.verificar("prestigio") >= self.acuracia
+            if self.PresCd == 0 and self.prestigioVisivel:
+                self.incrementar()
+                self.PresCd = 30
 
 
-        if self.leituraPendente and self.tick % 4 == 0:
-            if self.verificar("botaospins") >= self.acuracia:
-                self.framesMenu +=1
-            else:
+            if self.leituraPendente and self.tick % 4 == 0:
+                if self.verificar("botaospins") >= self.acuracia:
+                    self.framesMenu +=1
+                else:
+                    self.framesMenu = 0
+
+            if self.framesMenu >=2:
+                self.leituraPendente = False
+                self.Rodando = True
                 self.framesMenu = 0
-
-        if self.framesMenu >=2:
-            self.leituraPendente = False
-            self.Rodando = True
-            self.framesMenu = 0
-            self.Root.after(500,self.lerSpins)
-        
+                self.Root.after(500,self.lerSpins)
+            
         self.Root.after(50,self.monitorar)
 
     def capturarTemplate(self,nome):
