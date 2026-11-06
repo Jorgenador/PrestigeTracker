@@ -13,6 +13,7 @@ import pywinctl as pwc
 
 class ContadorApp():
     def __init__(self,root):
+        self.Focado = False
         self.Rodando = False
         self.corTexto = "#cdd6f4"
         self.corFundo = "#1e1e2e"
@@ -398,12 +399,14 @@ class ContadorApp():
     def atualizarTimer(self):
         focus = self.robloxFocus()
         if focus and self.AddSpins and not self.Pausado and not self.Rodando:
+                self.Focado = True
                 self.label_tempo.config(fg=self.corSubt)
                 self.label_statsTTime.config(fg=self.corTexto)
                 self.label_statSTime.config(fg=self.corTexto)
                 self.tempoSegundos+=1
                 self.totalTempo+=1
         else:
+            self.Focado = False
             self.label_tempo.config(fg="red")
             self.label_statsTTime.config(fg="red")
             self.label_statSTime.config(fg="red")
@@ -457,7 +460,7 @@ class ContadorApp():
         self.Root.geometry(f"+{x}+{y}")
 
     def monitorar(self):
-        if self.robloxFocus():
+        if self.Focado:
             self.tick+=1
             self.prestigioVisivel = self.verificar("prestigio") >= self.acuracia
             if self.PresCd == 0 and self.prestigioVisivel:
