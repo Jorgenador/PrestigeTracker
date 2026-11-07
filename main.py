@@ -344,7 +344,8 @@ class ContadorApp():
             if self.spinBreak < 1:
                 self.attCiclos(False)
                 self.spinBreak = self.MaxP
-            if qnt > 0:
+            if qnt > 0 and self.spinBreak > 3:
+                print("Leitura armada")
                 self.leituraPendente = True
         self.AtualizarBolas()
 
@@ -397,16 +398,13 @@ class ContadorApp():
         self.label_spinbreak.config(text=f"{texto}")
 
     def atualizarTimer(self):
-        focus = self.robloxFocus()
-        if focus and self.AddSpins and not self.Pausado and not self.Rodando:
-                self.Focado = True
+        if self.Focado and self.AddSpins and not self.Pausado and not self.Rodando:
                 self.label_tempo.config(fg=self.corSubt)
                 self.label_statsTTime.config(fg=self.corTexto)
                 self.label_statSTime.config(fg=self.corTexto)
                 self.tempoSegundos+=1
                 self.totalTempo+=1
         else:
-            self.Focado = False
             self.label_tempo.config(fg="red")
             self.label_statsTTime.config(fg="red")
             self.label_statSTime.config(fg="red")
@@ -460,8 +458,10 @@ class ContadorApp():
         self.Root.geometry(f"+{x}+{y}")
 
     def monitorar(self):
+        self.tick+=1
+        if self.tick% 5 == 0:
+            self.Focado = self.robloxFocus()
         if self.Focado:
-            self.tick+=1
             self.prestigioVisivel = self.verificar("prestigio") >= self.acuracia
             if self.PresCd == 0 and self.prestigioVisivel:
                 self.incrementar()
@@ -476,7 +476,6 @@ class ContadorApp():
 
             if self.framesMenu >=2:
                 self.leituraPendente = False
-                self.Rodando = True
                 self.framesMenu = 0
                 self.Root.after(500,self.lerSpins)
             
@@ -557,6 +556,7 @@ class ContadorApp():
         if not aceito:
             print("Leitura rejeitada",valor)
             return
+        self.Rodando = True
         self.spins += valor
         self.label_spins.config(text=str(self.spins))
         self.salvar_contador()
